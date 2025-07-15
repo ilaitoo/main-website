@@ -109,10 +109,18 @@ export default function Header() {
             isMenuOpen ? "-left-[100px]" : "-left-[768px]"
           }  z-50 fixed bg-[#eee] p-10 transition-all duration-500 md:hidden`}
         >
-          <Link href={"/"}>Home</Link>
-          <Link href={"/shop"}>Shop</Link>
-          <Link href={"/about-us"}>About Us</Link>
-          <Link href={"/contact"}>Contact</Link>
+          <Link href={"/"} onClick={() => setIsMenuOpen(false)}>
+            Home
+          </Link>
+          <Link href={"/shop"} onClick={() => setIsMenuOpen(false)}>
+            Shop
+          </Link>
+          <Link href={"/about-us"} onClick={() => setIsMenuOpen(false)}>
+            About Us
+          </Link>
+          <Link href={"/contact"} onClick={() => setIsMenuOpen(false)}>
+            Contact
+          </Link>
           {user ? (
             <div className="flex gap-4 mt-auto mb-10 cursor-pointer items-center">
               <span>{user.firstName}</span>
