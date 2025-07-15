@@ -142,12 +142,12 @@ export default function Header() {
         {isMenuOpen ? (
           <X
             onClick={toggleMenu}
-            className="z-50 md:hidden fixed right-5 cursor-pointer"
+            className="z-50 md:hidden right-5 cursor-pointer"
           />
         ) : (
           <Menu
             onClick={toggleMenu}
-            className="z-50 md:hidden fixed  right-5 cursor-pointer"
+            className="z-50 md:hidden  right-5 cursor-pointer"
           />
         )}
       </nav>
