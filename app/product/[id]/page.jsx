@@ -4,9 +4,11 @@ import { Star, StarHalf } from "lucide-react";
 import FeaturedProductsh1 from "@/components/home/FeaturedProductsh1";
 import FeaturedProducts from "@/components/product/FeaturedProducts";
 import { assets } from "@/assets/assets";
+import { useAppContext } from "@/context/AppContext";
+import AddToCartBtn from "@/components/product/AddToCartBtn";
 
 export default async function ProductPage({ params }) {
-  await delay();
+  // await delay();
   const productId = (await params).id;
   // const product = await fetchProduct(productId);
   const product = await getProduct(productId);
@@ -96,9 +98,10 @@ export default async function ProductPage({ params }) {
             </div>
           </div>
           <div className="flex justify-between mt-10 ">
-            <button className="bg-[#f3f4f6] px-24 py-3 cursor-pointer transition-all duration-200 hover:bg-[#e5e7eb] hover:shadow-md ">
-              Add to Cart
-            </button>
+            <AddToCartBtn
+              product={product}
+              className="bg-[#f3f4f6] px-24 py-3 cursor-pointer transition-all duration-200 hover:bg-[#e5e7eb] hover:shadow-md "
+            />
             <button className="bg-[#f97315] px-24 py-3 text-white cursor-pointer transition-all duration-200 hover:bg-[#fb923c] hover:scale-[1.02] hover:shadow-lg">
               Buy now
             </button>

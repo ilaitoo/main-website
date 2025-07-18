@@ -5,7 +5,7 @@ import { useAppContext } from "@/context/AppContext";
 import delay, { fetchProducts, getProducts } from "@/lib/lib";
 
 export default async function ShopPage() {
-  await delay();
+  // await delay();
   // const products = await fetchProducts();
   // console.log("fake:", products[0]);
   const products = await getProducts();

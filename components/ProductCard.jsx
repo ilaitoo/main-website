@@ -1,5 +1,6 @@
 "use client";
 import { assets } from "@/assets/assets";
+import { useAppContext } from "@/context/AppContext";
 import { Heart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,7 +56,7 @@ export default function ProductCard({ p }) {
       <div className="flex justify-between items-center">
         <span>${p.price}</span>
         <button className="border border-[#e2e3e5]  rounded-full px-3 py-2 text-xs text-[#6b7280] hover:bg-[#eee] transition-all duration-300 cursor-pointer">
-          Buy now
+          Buy Now
         </button>
       </div>
     </Link>

@@ -1,13 +1,38 @@
 "use client";
+import { useAppContext } from "@/context/AppContext";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function OrderForm() {
+  const { cartProducts } = useAppContext();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [taxPrice, setTaxPrice] = useState(
+    (totalPrice * Number.parseInt(process.env.NEXT_PUBLIC_TAX)) / 100
+  );
+  const [shippingFee, setShippingFee] = useState(20);
   const [addressInputOpen, setAddressInputOpen] = useState(false);
+
+  useEffect(() => {
+    setTotalPrice(() => {
+      let total = 0;
+      cartProducts.map((p) => {
+        total += p?.product?.price * p.quantity;
+      });
+      return total;
+    });
+  }, [cartProducts]);
+
+  useEffect(() => {
+    setTaxPrice(
+      (totalPrice * Number.parseInt(process.env.NEXT_PUBLIC_TAX)) / 100
+    );
+  }, [totalPrice]);
+
   function handleSelectAddress(e) {
     setAddressInputOpen((prev) => !prev);
   }
+
   return (
     <>
       <div className=" flex-4 bg-[#f8f8f9] py-7 px-5 flex flex-col gap-4 shadow-lg rounded">
@@ -63,20 +88,24 @@ export default function OrderForm() {
         <hr className="border-[#ced0d4]" />
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Price</span>
-          <span className="font-semibold">$0</span>
+          <span className="font-semibold">${totalPrice}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Shipping Fee</span>
-          <span className="font-semibold">Free</span>
+          <span className="font-semibold">
+            {shippingFee > 0 ? shippingFee : "Free"}
+          </span>
         </div>
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Tax (2%)</span>
-          <span className="font-semibold">$0</span>
+          <span className="font-semibold">${taxPrice}</span>
         </div>
         <hr className="border-[#ced0d4]" />
         <div className="flex justify-between text-xl font-semibold">
           <span className=" tracking-wide ">Total</span>
-          <span>$0</span>
+          <span>
+            ${`${totalPrice + taxPrice + (totalPrice > 0 ? shippingFee : 0)}`}
+          </span>
         </div>
         <button type="button" className="bg-[#ea580b] text-white py-3 ">
           Place Order

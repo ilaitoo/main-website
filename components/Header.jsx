@@ -59,7 +59,12 @@ export default function Header() {
     <>
       <nav className="flex justify-between h-[60px] lg:px-32 px-6  items-center  border-b-[1px] border-[#d1d5db] relative">
         <Link href={"/"}>
-          <Image className="cursor-pointer md lg:w-32" src={image} alt="logo" />
+          <Image
+            className="cursor-pointer md "
+            priority
+            src={image}
+            alt="logo"
+          />
         </Link>
         <div className="md:flex gap-10 text-md hidden ">
           <Link href={"/"}>Home</Link>
@@ -141,7 +146,13 @@ export default function Header() {
               </UserButton>
             </div>
           ) : (
-            <button onClick={openSignIn} className="flex gap-2 mt-auto mb-10">
+            <button
+              onClick={() => {
+                setIsMenuOpen(false);
+                openSignIn();
+              }}
+              className="flex gap-2 mt-auto mb-10"
+            >
               <User className="w-4 cursor-pointer" />
               <span className="cursor-pointer">Account</span>
             </button>

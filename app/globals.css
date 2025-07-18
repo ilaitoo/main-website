@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  --main-color: #ec5f1e;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
