@@ -18,7 +18,7 @@ import { useAppContext } from "@/context/AppContext";
 import { assets, BagIcon, CartIcon } from "@/assets/assets";
 import { signIn, signOut, useSession } from "next-auth/react";
 import CartCounter from "./cart/CartCounter";
-import CartItems from "./cart/cartItems";
+import CartItems from "./cart/CartItems";
 import DropOption from "./DropOption";
 
 export default function Header() {
