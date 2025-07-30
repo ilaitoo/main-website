@@ -5,6 +5,7 @@ const nextConfig = {
       "raw.githubusercontent.com",
       "img.clerk.com",
       "nextjs15-ecommerce.s3.amazonaws.com",
+      "lh3.googleusercontent.com",
     ],
   },
 };

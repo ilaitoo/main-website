@@ -1,5 +1,6 @@
 import OrderForm from "@/components/cart/OrderForm";
 import Table from "@/components/cart/Table";
+import CartCounter from "@/components/cart/CartCounter";
 import delay from "@/lib/lib";
 import { ArrowLeft } from "lucide-react";
 
@@ -14,7 +15,9 @@ export default async function CartPage() {
             <h1 className="text-3xl  text-[#6b7280]">
               Your <span className="text-[#ec5f1e] font-semibold">Cart</span>
             </h1>
-            <div className="text-xl text-[#888e99]">0 Items</div>
+            <div className="text-xl text-[#888e99]">
+              <CartCounter /> Items
+            </div>
           </div>
           <hr className="border-[#d3d5d8]" />
           <Table />

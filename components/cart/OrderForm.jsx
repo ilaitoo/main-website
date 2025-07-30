@@ -2,16 +2,46 @@
 import { useAppContext } from "@/context/AppContext";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function OrderForm() {
   const { cartProducts } = useAppContext();
+  const [codeApplied, setCodeApplied] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [taxPrice, setTaxPrice] = useState(
     (totalPrice * Number.parseInt(process.env.NEXT_PUBLIC_TAX)) / 100
   );
+
   const [shippingFee, setShippingFee] = useState(20);
   const [addressInputOpen, setAddressInputOpen] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const promoCodes = [
+    { code: "WELCOME10", percentage: 10 },
+    { code: "SAVE20", percentage: 20 },
+  ];
+  const [finalPrice, setFinalPrice] = useState(getFinalPrice());
+  const addressInputRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(ev) {
+      if (
+        addressInputRef.current &&
+        !addressInputRef.current.contains(ev.target)
+      ) {
+        setAddressInputOpen(false);
+      }
+    }
+
+    if (addressInputOpen) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [addressInputOpen]);
 
   useEffect(() => {
     setTotalPrice(() => {
@@ -29,8 +59,46 @@ export default function OrderForm() {
     );
   }, [totalPrice]);
 
+  useEffect(() => {
+    setFinalPrice(getFinalPrice());
+  }, [totalPrice, taxPrice, shippingFee, codeApplied]);
+
   function handleSelectAddress(e) {
     setAddressInputOpen((prev) => !prev);
+  }
+
+  function getFinalPrice() {
+    if (codeApplied) {
+      const total = totalPrice + taxPrice + (totalPrice > 0 ? shippingFee : 0);
+      return (total - total * getPromoCodePercentage()).toFixed(2);
+    }
+    return (totalPrice + taxPrice + (totalPrice > 0 ? shippingFee : 0)).toFixed(
+      2
+    );
+  }
+
+  function getPromoCodePercentage() {
+    for (const code of promoCodes) {
+      if (promoCode === code.code) {
+        return code.percentage / 100;
+      }
+    }
+    return null;
+  }
+
+  function applyPromoCode() {
+    const percentage = getPromoCodePercentage();
+    if (percentage) {
+      setFinalPrice((finalPrice - finalPrice * percentage).toFixed(2));
+
+      return setCodeApplied(true);
+    }
+    return;
+  }
+
+  function disApplyingCode() {
+    setCodeApplied(false);
+    return setFinalPrice(getFinalPrice());
   }
 
   return (
@@ -43,6 +111,7 @@ export default function OrderForm() {
             Select Address
           </label>
           <div
+            ref={addressInputRef}
             type="button"
             className=" border-1 border-[#e5e7eb] text-sm flex justify-between p-2 pl-5 bg-white relative cursor-pointer select-none"
             onClick={handleSelectAddress}
@@ -77,35 +146,57 @@ export default function OrderForm() {
             type="text"
             className="border border-[#e5e7eb] px-5 p-3 bg-white outline-none text-md"
             placeholder="Enter promo code"
+            value={promoCode}
+            onChange={(ev) => {
+              setPromoCode(ev.currentTarget.value);
+            }}
+            disabled={codeApplied}
           />
-          <button
-            type="button"
-            className="bg-[#ea580b] w-fit px-8 py-2 text-white"
-          >
-            Apply
-          </button>
+          <div className="flex gap-2 items-center">
+            <button
+              type="button"
+              className="bg-[#ea580b] w-fit px-8 py-2 text-white disabled:bg-[#e7baa1]"
+              onClick={() => {
+                return applyPromoCode();
+              }}
+              disabled={codeApplied}
+            >
+              Apply
+            </button>
+
+            {codeApplied && (
+              <button
+                type="button"
+                className="text-[#ea580b] px-2 h-fit text-sm"
+                onClick={() => {
+                  console.log("disApplied");
+                  return disApplyingCode();
+                }}
+              >
+                Cancel
+              </button>
+            )}
+          </div>
         </form>
         <hr className="border-[#ced0d4]" />
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Price</span>
-          <span className="font-semibold">${totalPrice}</span>
+          <span className="font-semibold">${totalPrice.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Shipping Fee</span>
           <span className="font-semibold">
-            {shippingFee > 0 ? shippingFee : "Free"}
+            ${shippingFee > 0 ? shippingFee.toFixed(2) : "Free"}
           </span>
         </div>
         <div className="flex justify-between">
           <span className="text-[#4b5563]">Tax (2%)</span>
-          <span className="font-semibold">${taxPrice}</span>
+          <span className="font-semibold">${taxPrice.toFixed(2)}</span>
         </div>
         <hr className="border-[#ced0d4]" />
         <div className="flex justify-between text-xl font-semibold">
           <span className=" tracking-wide ">Total</span>
-          <span>
-            ${`${totalPrice + taxPrice + (totalPrice > 0 ? shippingFee : 0)}`}
-          </span>
+          <span>${`${finalPrice}`}</span>
         </div>
         <button type="button" className="bg-[#ea580b] text-white py-3 ">
           Place Order

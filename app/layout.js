@@ -6,14 +6,6 @@ import CopyRights from "@/components/CopyRights";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import FadeIn from "@/components/FadeIn";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,23 +24,21 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <AppContextProvider>
-            <div className="flex flex-col min-h-screen h-fit">
-              <Header />
-              <Container>
-                <FadeIn>{children}</FadeIn>
-                <Footer />
-              </Container>
-              <CopyRights />
-            </div>
-          </AppContextProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <AppContextProvider>
+          <div className="flex flex-col min-h-screen h-fit">
+            <Header />
+            <Container>
+              <FadeIn>{children}</FadeIn>
+              <Footer />
+            </Container>
+            <CopyRights />
+          </div>
+        </AppContextProvider>
+      </body>
+    </html>
   );
 }

@@ -55,6 +55,7 @@ import address from "./illustrations/Address-pana.svg";
 import no_product from "./no-product.png";
 import increaseArrow from "./increase_arrow.debd242b.svg";
 import decreaseArrow from "./decrease_arrow.49ede825.svg";
+import noProfile from "./no-profile.png";
 
 export const assets = {
   logo,
@@ -114,6 +115,7 @@ export const assets = {
   no_product,
   increaseArrow,
   decreaseArrow,
+  noProfile,
 };
 
 export const BagIcon = () => {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { products as productsData } from "../../assets/productData";
 import ProductCard from "../ProductCard";
 import { getProducts } from "@/lib/lib";
+import { ArrowLeft } from "lucide-react";
 
 export default async function PopularProducts() {
   const starsSize = 15;
@@ -16,12 +17,12 @@ export default async function PopularProducts() {
           {products?.length > 0 &&
             products.map((p) => <ProductCard p={p} key={p?._id} />)}
         </div>
-        <div className="text-center my-5 ">
+        <div className=" my-5 flex justify-center">
           <Link
             href="/shop"
-            className="px-10 py-3 border rounded-sm text-[#aaa] hover:bg-[#eee] transition duration-500"
+            className="px-10 py-3 border rounded-sm text-[#aaa] hover:bg-[#eee] transition duration-500 shadow-sm flex w-fit gap-4 items-center"
           >
-            See more
+            <span>See more</span>
           </Link>
         </div>
       </div>

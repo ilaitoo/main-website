@@ -1,5 +1,6 @@
 "use client";
-import { useUser } from "@clerk/nextjs";
+import { auth } from "@/auth";
+import Session from "@/components/Session";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -24,10 +25,17 @@ export function AppContextProvider({ children }) {
   const [cartProducts, setCartProducts] = useState([]);
   const currency = process.env.NEXT_PUBLIC_CURRENCY;
   const router = useRouter();
-
-  const { user } = useUser();
-
+  const [user, setUser] = useState({});
   const addresses = useState([]);
+
+  // console.log(user);
+
+  useEffect(() => {
+    async function getUser() {
+      setUser((await Session())?.user);
+    }
+    getUser();
+  }, []);
 
   function addToCart(product) {
     setCartProducts((prev) => {
